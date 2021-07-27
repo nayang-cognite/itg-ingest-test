@@ -1,4 +1,4 @@
 # itg-ingest-test
 
-yarn install
-yarn run run 
+- yarn install
+- yarn run run 
