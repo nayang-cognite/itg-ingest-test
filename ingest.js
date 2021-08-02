@@ -2,6 +2,8 @@ const axios = require( 'axios')
 const dotenv = require('dotenv')
 dotenv.config({path: './.env.local'})
 
+const {initLogger} = require('./utils')
+const logger = initLogger("ingest", process.env.LOG_LEVEL)
 
 async function createPopulationSchedules(
     databaseName,
