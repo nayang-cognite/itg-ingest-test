@@ -16,5 +16,5 @@ function initLogger (label, logLevel) {
 }
 
 module.exports = {
-    initLogger_
+    initLogger
 }
