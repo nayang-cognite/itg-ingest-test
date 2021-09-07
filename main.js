@@ -1,8 +1,9 @@
 const dotenv = require('dotenv')
-dotenv.config({path: './.env.local'})
+dotenv.config({ path: './.env.local' })
 
-const {createPopulationSchedules} = require('./ingest')
-const {readRaw} = require('./cdf')
+const { createPopulationSchedules } = require('./ingest')
+const { readRaw } = require('./cdf')
+const { listFunctionCalls } = require('./FunctionCalls')
 
 const ThreedTransform = ` { 
     "id": id, 
@@ -22,23 +23,23 @@ const ThreedTransform = ` {
     "subtree_size": subtree_size ? $number(subtree_size) : "",
     "parent_id": parent_id
   }
-  `  
+  `
 
 async function createSchdule(data) {
     const baseUrl = "https://itg.cognite.ai"
     const customerApiKey = process.env.CUSTOMER_API_KEY
     const tenant = process.env.TENANT
 
-    const {databaseName, tableName, cronExpression} = data
-    const {schemaType, itgProjectId, jsonataTransform} = data    
+    const { databaseName, tableName, cronExpression } = data
+    const { schemaType, itgProjectId, jsonataTransform } = data
 
     await createPopulationSchedules(
         databaseName,
         tableName,
         cronExpression,
-        schemaType, 
+        schemaType,
         itgProjectId,
-        jsonataTransform, 
+        jsonataTransform,
         baseUrl,
         customerApiKey,
         tenant
@@ -51,14 +52,13 @@ async function readRawData() {
     // https://docs.cognite.com/api/v1/#operation/deleteTables 
     // Note that the 'minLastUpdatedTime' and the 'maxLastUpdatedTime' query parameter on Read Rows are ignored when a cursor is specified.
     const rawApiOptions = {
-        minLastUpdatedTime : 1627495502979,
+        minLastUpdatedTime: 1627495502979,
         limit: 10000
     }
     readRaw(rawDb, rawTable, rawApiOptions)
 }
 
-
-const databaseName  = "threed2"
+const databaseName = "threed2"
 const tableName = "threed.7908259153294755.3779290245691444"
 const cronExpression = "10 */2 * * *"
 const schemaType = "Model"
@@ -67,24 +67,25 @@ const jsonataTransform = ThreedTransform
 const baseUrl = "https://itg.cognite.ai"
 
 const threeDScheduleData = {
-    databaseName  : "threed2",
-    tableName : "threed.7908259153294755.3779290245691444",
-    cronExpression : "*/20 * * * *",
-    schemaType : "Model",
+    databaseName: "threed2",
+    tableName: "threed.7908259153294755.3779290245691444",
+    cronExpression: "*/20 * * * *",
+    schemaType: "Model",
     itgProjectName: "nancy-3",
-    itgProjectId : "a04c96a53-642c-4e30-8133-76cf5f000256",
-    jsonataTransform : ThreedTransform
+    itgProjectId: "a04c96a53-642c-4e30-8133-76cf5f000256",
+    jsonataTransform: ThreedTransform
 }
 
 const areaScheduleData = {
-    databaseName  : "ItgSampleDataPop",
-    tableName : "Area",
-    cronExpression : "*/5 * * * *",
-    schemaType : "Area",
+    databaseName: "ItgSampleDataPop",
+    tableName: "Area",
+    cronExpression: "*/5 * * * *",
+    schemaType: "Area",
     itgProjectName: "",
-    itgProjectId : "a04c96a53-642c-4e30-8133-76cf5f000256",
-    
-    jsonataTransform : undefined
+    itgProjectId: "a04c96a53-642c-4e30-8133-76cf5f000256",
+
+    jsonataTransform: undefined
 }
 
-createSchdule(threeDScheduleData)
+// createSchdule(threeDScheduleData)
+listFunctionCalls(6429432455268604)
