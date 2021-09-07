@@ -1,4 +1,6 @@
 const winston = require('winston');
+const moment = require('moment'); // require
+
 
 function initLogger (label, logLevel) {
     return winston.createLogger({
@@ -15,6 +17,11 @@ function initLogger (label, logLevel) {
     })      
 }
 
+function convertEpoch2Local(epoch) {
+    return moment.utc(epoch).local().format('YYYY-MM-DD HH:mm:ss')
+}
+
 module.exports = {
-    initLogger
+    initLogger,
+    convertEpoch2Local
 }
